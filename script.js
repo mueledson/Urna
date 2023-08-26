@@ -2,9 +2,9 @@ let etapas = [
     {
         titulo: 'VEREADOR',
         numeros: 5,
-        candidato: [
+        candidatos: [
             {
-                numeros: 38111,
+                numeros: '38111',
                 nome: 'Fulano de Tal',
                 partido: 'ABC',
                 fotos: [
@@ -12,7 +12,7 @@ let etapas = [
                 ]
             },
             {   
-                numeros: 77222,
+                numeros: '77222',
                 nome: 'Beltrana da Silva',
                 partido: 'DEFG',
                 fotos: [
@@ -26,7 +26,7 @@ let etapas = [
         numeros: 2,
         candidatos: [
             {
-                numero: 99,
+                numero: '99',
                 nome: 'Ciclano',
                 partido: 'ABC',
                 vice: 'Cic',
@@ -36,7 +36,7 @@ let etapas = [
                 ]
             },
             {   
-                numero: 84,
+                numero: '84',
                 nome: 'Zulano',
                 partido: 'QWERTY',
                 vice: 'Zul',
@@ -54,7 +54,6 @@ let cargo = document.querySelector('.d-1-2 span');
 let descricao = document.querySelector('.d-1-4');
 let aviso = document.querySelector('.d-2');
 let lateral = document.querySelector('.tela .d-1 .d-1-right')
-// let lateral = document.querySelector('.d-1-right');
 let numeros = document.querySelector('.d-1-3');
 
 let etapaAtual = 0
@@ -66,7 +65,11 @@ function comecarEtapa() {
     let numeroHtml = '';
 
     for(let i=0;i<etapa.numeros; i++) {
-        numeroHtml += '<div class="numero"></div>';
+        if (i === 0) {
+            numeroHtml += '<div class="numero pisca"></div>';            
+        }else{
+            numeroHtml += '<div class="numero"></div>';   
+        }
     }
 
     seuVotoPara.style.display = 'none';
@@ -75,16 +78,45 @@ function comecarEtapa() {
     aviso.style.display = 'none';
     lateral.innerHTML = '';
     numeros.innerHTML = numeroHtml;
-
-    console.log(etapas[etapaAtual]);
 }
 
 function atulizaInterface() {
-    
+    let etapa = etapas[etapaAtual]
+    let candidato = etapa.candidatos.filter((item)=>{
+        if (item.numero === numero) {
+            return true
+        } else {
+            return false
+        }
+    })
+    if (candidato.length > 0) {
+        candidato = candidato[0]
+        seuVotoPara.style.display = 'flex'
+        aviso.style.display = 'flex'
+        descricao.innerHTML = `Nome: ${candidato.nome}<br/>Partido: ${candidato.partido}`
+        
+        let fotosHtml = ''
+        for (let i in candidato.fotos) {
+            fotosHtml.innerHTML += `<div class='d-1-image'> <img src='images/${etapas.candidatos.fotos[i].url}' /> ${etapas.candidatos.fotos[i].legenda} </div>`
+        }
+
+        lateral.innerHTML = fotosHtml
+    }
 }
 
 function clicou(n) {
-    alert("Clicou em " + n);
+   let elNumero = document.querySelector('.numero.pisca')
+   if (elNumero !== null) {
+        elNumero.innerHTML = n
+        numero = `${numero}${n}`;
+
+        elNumero.classList.remove('pisca')
+        if (elNumero.nextElementSibling !== null) {
+            elNumero.nextElementSibling.classList.add('pisca')   
+        } else {
+            atulizaInterface()
+        }
+   }
 }
 function branco() {
     alert("Clicou em BRANCO");

@@ -113,11 +113,10 @@ body {
     display: inline-block;
     width: 30px;
     height: 40px;
-    border: 2px solid #000;
+    border: 1px solid #000;
     text-align: center;
     line-height: 40px;
     font-size: 25px;
-
 }
 
 .pisca {
